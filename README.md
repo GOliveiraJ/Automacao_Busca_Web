@@ -1,35 +1,56 @@
-# Automacao_Busca_Web
-# 📄 GGTAB - Monitoramento Integrado de Redes Sociais
+# 🤖 GGTAB - Monitoramento Integrado com IA Local (Ollama)
 
-Uma aplicação web desenvolvida para automatizar a varredura, captura e análise de publicações e perfis em múltiplas redes sociais (Instagram, TikTok, Threads, Facebook e Pinterest). 
+Uma plataforma de inteligência e automação desenvolvida para varrer múltiplas redes sociais (Instagram, TikTok, Threads, Facebook e Pinterest), impulsionada por **Inteligência Artificial Executada Localmente**.
 
-O objetivo do projeto é facilitar a fiscalização e o monitoramento regulatório. O robô navega pelas plataformas buscando por palavras-chave específicas, extrai textos (bios e legendas), classifica o nível de risco do conteúdo e captura "prints" da tela para servir como evidência legal, consolidando tudo em relatórios automatizados.
+Diferente de scrapers tradicionais, este sistema utiliza o modelo **Llama 3.2 via Ollama** (sem dependência de APIs pagas ou envio de dados à nuvem) como um agente classificador. A IA analisa os textos extraídos em tempo real (bios e legendas), determina o grau de risco (ex: venda ilegal de vapes ou produtos restritos), sugere novos termos de busca e aprende com o feedback do usuário.
 
 ## 🚀 Principais Funcionalidades
 
-* **Scraping Multi-Plataforma:** Scripts dedicados para contornar bloqueios e extrair dados do Instagram, TikTok, Threads, Facebook e Pinterest.
-* **Captura de Evidências:** Tira screenshots automáticos de cada perfil ou post suspeito e salva localmente.
-* **Relatórios Automáticos:** Integração com geradores de PDF e arquivos ZIP, compilando todas as evidências visuais e textuais em um único pacote para download.
-* **Otimização de Navegação:** Bloqueio inteligente de mídias pesadas (vídeos, áudios e GIFs) para acelerar o processamento do Playwright.
+* **Integração com IA Local (Ollama):** Classificação semântica de textos utilizando o Llama 3.2. A IA identifica menções a produtos fumígenos, cataloga os perfis suspeitos e sugere novas hashtags e termos de pesquisa baseados no comportamento de mercado.
+* **Sistema de Votação & Machine Learning (Feedback Loop):** O usuário pode dar "👍" ou "👎" nas análises geradas. Esse feedback é armazenado localmente para que o modelo aprenda e filtre falsos-positivos nas próximas varreduras.
+* **Scraping Multi-Plataforma Robusto:** Utiliza o *Playwright* com gerenciamento de contextos persistentes, garantindo que o robô consiga navegar logado e contornar bloqueios em plataformas complexas como Instagram e TikTok.
+* **Geração Automática de Dossiês:** Todas as evidências coletadas (screenshots de tela cheia, avaliações da IA e links) são compiladas automaticamente em um Relatório PDF estruturado e exportadas junto com as imagens em um arquivo ZIP seguro.
+* **Navegação Otimizada:** Função de intercepção de rede para bloquear o carregamento de vídeos e GIFs, acelerando exponencialmente a velocidade de raspagem do robô.
 
-## 🛠️ Tecnologias e Pré-requisitos
+## 🛠️ Stack Tecnológico
 
-* **Python 3.8+**
-* **[Streamlit](https://streamlit.io/):** Responsável por toda a interface de usuário (Frontend).
-* **[Playwright](https://playwright.dev/python/):** Motor de automação de navegadores (Backend/Scraping).
-* **python-dotenv:** Para gerenciamento seguro de credenciais via arquivo `.env`.
+* **Interface e Dashboard:** Python & [Streamlit](https://streamlit.io/)
+* **Inteligência Artificial (LLM Local):** [Ollama](https://ollama.ai/) rodando o modelo `llama3.2`
+* **Automação Web (Scraping):** [Playwright](https://playwright.dev/python/) (Síncrono)
+* **Processamento de Relatórios:** `FPDF` (para criação dos dossiês) e `zipfile`
 
-*Nota: Este script depende de módulos auxiliares locais (`analyzer.py`, `report_pdf.py`, `recommender.py`) que processam o texto e geram os documentos finais.*
+## ⚙️ Arquitetura do Projeto
+
+O sistema é modularizado em 4 núcleos:
+1. `app_final_v10_pro.py`: O maestro (Frontend Streamlit + Controle do Playwright).
+2. `analyzer.py`: A ponte com o Ollama, enviando os textos extraídos para classificação de risco pelo Llama 3.2.
+3. `recommender.py`: Motor que analisa o histórico de buscas e votos do usuário para sugerir novas ações.
+4. `report_pdf.py`: O formatador legal que gera os pacotes de evidências.
 
 ## 📦 Como Instalar e Rodar
 
-1. Clone este repositório para sua máquina local.
-2. Crie e ative um ambiente virtual (recomendado).
-3. Instale as dependências listadas:
-   ```bash
+### 1. Pré-requisito da Inteligência Artificial
+Para que o `analyzer.py` e o `recommender.py` funcionem, é estritamente necessário ter o Ollama rodando no background.
+1. Baixe e instale o [Ollama](https://ollama.ai/).
+2. Abra o terminal e baixe o modelo necessário:
+   ollama run llama3.2
+   Clone este repositório:
+   git clone [https://github.com/seu-usuario/nome-do-repositorio.git](https://github.com/seu-usuario/nome-do-repositorio.git)
+   cd nome-do-repositorio
+
+   Crie e ative um ambiente virtual, depois instale as dependências:
+   python -m venv venv
+   source venv/bin/activate  # Linux/Mac
+   venv\Scripts\activate     # Windows
    pip install -r requirements.txt
-   Instale os binários dos navegadores do Playwright (passo obrigatório):
+
+   Instale os binários dos navegadores do Playwright:
    playwright install
-   Crie um arquivo .env na raiz do projeto com suas credenciais (ex: IG_USERNAME, IG_PASSWORD).
-  Execute o painel interativo:
-  streamlit run automation/app_final_v10_pro.py
+
+   Configure as credenciais no arquivo .env (ex: IG_USERNAME, IG_PASSWORD).
+   
+    Iniciar a Plataforma
+   Com o Ollama rodando silenciosamente no seu PC, levante o servidor do Streamlit:
+   streamlit run automation/app_final_v10_pro.py
+   
+   
