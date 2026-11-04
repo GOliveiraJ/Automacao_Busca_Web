@@ -277,7 +277,7 @@ Para reutilização ou distribuição, consulte os responsáveis legais.
 
 Se tiver dúvidas ou precisar de suporte técnico:
 
-**Desenvolvedor:** Gustavo Canedo Gusmão
+**Desenvolvedor:** Gustavo Canedo Gusmão e implementado por Gabriel Jesus
 **E-mail:** *(preencher conforme necessário)*
 
 ---
